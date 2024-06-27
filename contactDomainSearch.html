@@ -1,0 +1,48 @@
+<template>
+  <!--This component displays contacts with matching domain on search with company's website URL -->
+  <lightning-card title="Search Contacts by Account's Website">
+      <div class="slds-grid slds-gutters slds-p-around_medium slds-container_width">
+        <lightning-input
+          id="searchinput"
+          type="search"
+          placeholder="Enter Company's website here"
+          variant="label-hidden"
+          class="slds-col slds-size_2-of-3"
+        ></lightning-input>
+        <lightning-button 
+          label = "Search"
+          variant="brand" 
+          class="slds-col slds-size_1-of-3" 
+          onclick={handleSearch}
+        >Search</lightning-button>
+      </div>
+      <!--if any component level error, error details are displayed here-->
+      <template lwc:if={error}>
+        <p class="slds-p-around_medium" align = "center">Sorry, something went wrong</p>
+      </template>
+      <!--Spinner template to display on search until contacts are loaded-->
+      <template if:true={loading}>
+        <div>
+          <lightning-spinner alternative-text = "Loading"></lightning-spinner>
+        </div>
+      </template>
+      <!--Data table in which contacts are displayed-->
+      <template lwc:if={dataExists}>
+        <lightning-datatable
+          data={contacts}
+          columns={columns}
+          key-field="id"
+        >
+        </lightning-datatable>
+      </template>
+      <!--displays if any error on search from apex class-->
+      <template lwc:elseif={errorResponse}>
+        <p class="slds-p-around_medium" align = "center">Some Internal error, please try again</p>
+      </template>
+      <!--displays if no contacts are found-->
+      <template lwc:else>
+        <p class="slds-p-around_medium" align = "center">No Contacts Found</p>
+      </template>
+  </lightning-card>
+</template>
+  
